@@ -5,3 +5,4 @@ export { default as HomeHeader } from './HomeHeader';
 export { default as Header } from './Header';
 export { Container, ContainerTwo } from './Container';
 export { default as ImageContainer } from './ImageContainer';
+export * from './Input';

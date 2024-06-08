@@ -1,0 +1,38 @@
+/* Button.css */
+
+.button-link {
+	text-decoration: none;
+}
+
+.primary-button,
+.secondary-button {
+	display: inline-block;
+	padding: 0.8rem 1.5rem;
+	border-radius: 6.25rem;
+	cursor: pointer;
+	text-align: center;
+	font-size: var(--body-font-size-sm);
+	font-weight: var(--font-weight-normal);
+	border: 1px solid var(--color-primary);
+	transition: 0.3s all linear;
+}
+
+.primary-button {
+	background-color: var(--color-primary);
+	color: var(--color-light);
+}
+
+.secondary-button {
+	background-color: var(--color-light);
+	color: var(--color-primary);
+	border: 1px solid var(--color-primary-dark);
+}
+
+.primary-button:hover,
+.secondary-button:hover {
+	transition: 0.3s all linear;
+}
+
+.secondary-button:hover {
+	color: #fff;
+}
