@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/firestore": "^4.6.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,6 +11,7 @@
     "@types/node": "^16.18.98",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "firebase": "^10.12.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
@@ -44,6 +46,10 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
-    "file-loader": "^6.2.0"
-  }
+    "autoprefixer": "^10.4.19",
+    "file-loader": "^6.2.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4"
+  },
+  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }

@@ -1,71 +1,83 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Header, PasswordInput, TextInput } from '../../components';
-import { H1, P } from '../../utils/Typography';
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { AuthenticatedUserContext } from '../../provider';
+import { auth } from '../../firebase';
 
 const Login = () => {
-	const [password, setPassword] = useState('');
+	const { setUser } = useContext(AuthenticatedUserContext);
+	const [inputValue, setInputValue] = useState({ email: '', password: '' });
+	const navigate = useNavigate();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setPassword(e.target.value);
+		const { name, value } = e.target;
+		setInputValue({
+			...inputValue,
+			[name]: value,
+		});
 	};
-	const renderAsterisks = () => {
-		return '*'.repeat(password.length);
+
+	const onLogin = async () => {
+		try {
+			if (inputValue.email !== '' && inputValue.password !== '') {
+				const userCredential = await signInWithEmailAndPassword(
+					auth,
+					inputValue.email,
+					inputValue.password
+				);
+				const user = userCredential.user;
+				setUser(user);
+				localStorage.setItem('user', JSON.stringify(user));
+				navigate('/dashboard');
+			} else {
+				alert('Please fill in both fields');
+			}
+		} catch (error: any) {
+			console.log(error);
+			alert(error.message);
+		}
 	};
+
 	return (
 		<>
 			<Header />
-			<div
-				style={{
-					display: 'flex',
-					justifyContent: 'center',
-					flexDirection: 'column',
-					marginTop: '6rem',
-					alignItems: 'center',
-				}}
-			>
-				<H1>Welcome back! Sign in to your account</H1>
-				<div style={{ width: 780, marginTop: 100 }}>
-					<TextInput label="Email" placeholder="Input your Email" />
-					<div style={{ marginTop: 47 }}>
+			<div className="mx-auto px-5 md:px-10 lg:px-20 pb-10">
+				<h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-center">
+					Welcome back! Sign in to your account
+				</h1>
+				<div className="mt-10 lg:w-2/4 mx-auto">
+					<TextInput
+						label="Email"
+						name="email"
+						value={inputValue.email}
+						onChange={handleChange}
+						placeholder="Input your Email"
+					/>
+					<div className="mt-10">
 						<PasswordInput
-							margin={715}
-							value={renderAsterisks()}
+							name="password"
+							value={inputValue.password}
 							onChange={handleChange}
 							label="Password"
 							placeholder="Input your Password"
 						/>
 					</div>
-					<P fontWeight="700" fontSize="16px" marginTop="19px">
-						Forgot Password?
-					</P>
+					<p className="cursor-pointer font-bold mt-5">Forgot Password?</p>
 				</div>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						flexDirection: 'column',
-						marginTop: 100,
-					}}
-				>
+				<div className="flex items-center flex-col justify-center mt-10">
 					<Button
+						to=""
 						style={{ color: '#ffffff', borderRadius: 4, width: 348 }}
 						title="Log in"
-						to="/dashboard"
+						onClick={onLogin}
 					/>
-					<P marginTop="37px">
+					<p className="mt-3">
 						New here?{' '}
-						<a
-							style={{
-								color: '#000000',
-								fontWeight: '700',
-								textDecoration: 'none',
-							}}
-							href="/signup"
-						>
+						<Link className="font-bold text-black" to="/signup">
 							Register
-						</a>
-					</P>
+						</Link>
+					</p>
 				</div>
 			</div>
 		</>

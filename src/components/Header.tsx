@@ -1,21 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import { LogoIcon } from '../assets';
+import { LogoIcon } from "../assets";
 
 const Header = () => {
-	return (
-		<>
-			<Navbar>
-				<LogoIcon />
-			</Navbar>
-		</>
-	);
+  return (
+    <>
+      <div className="flex px-5 md:px-10 lg:px-20">
+        <LogoIcon />
+      </div>
+    </>
+  );
 };
 
 export default Header;
-
-const Navbar = styled.header`
-	display: flex;
-	align-items: center;
-	padding: 32px 120px 32px 120px;
-`;
