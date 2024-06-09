@@ -27,7 +27,6 @@ const Login = () => {
 					inputValue.password
 				);
 				const user = userCredential.user;
-				setUser(user);
 				localStorage.setItem('user', JSON.stringify(user));
 				navigate('/dashboard');
 			} else {
