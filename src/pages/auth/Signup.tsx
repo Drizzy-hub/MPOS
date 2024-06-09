@@ -1,9 +1,8 @@
 // src/pages/Signup.tsx
-import React, { useState, ChangeEvent, useContext } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Header } from '../../components';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
-import { AuthenticatedUserContext } from '../../provider';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import StepOne from './components/StepOne';
 import StepTwo from './components/StepTwo';
@@ -27,7 +26,6 @@ export interface StepProps {
 }
 
 const Signup: React.FC = () => {
-	const { setUser } = useContext(AuthenticatedUserContext);
 	const [currentStep, setCurrentStep] = useState<number>(1);
 	const [formData, setFormData] = useState<FormData>({
 		email: '',

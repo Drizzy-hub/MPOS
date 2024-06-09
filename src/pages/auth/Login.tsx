@@ -1,12 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Header, PasswordInput, TextInput } from '../../components';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { AuthenticatedUserContext } from '../../provider';
 import { auth } from '../../firebase';
 
 const Login = () => {
-	const { setUser } = useContext(AuthenticatedUserContext);
 	const [inputValue, setInputValue] = useState({ email: '', password: '' });
 	const navigate = useNavigate();
 
