@@ -49,10 +49,7 @@ const VerifyEmail: React.FC = () => {
 				state: formData.state,
 				country: formData.country,
 			});
-
 			await signInWithEmailAndPassword(auth, formData.email, formData.password);
-			localStorage.setItem('user', JSON.stringify(auth.currentUser));
-			navigate('/dashboard');
 		} catch (error) {
 			console.error('Error completing signup:', error);
 			navigate('/signup');
@@ -63,6 +60,8 @@ const VerifyEmail: React.FC = () => {
 		setCheckingVerification(true);
 		if (auth.currentUser && verified) {
 			await completeSignup(auth.currentUser);
+			localStorage.setItem('user', JSON.stringify(auth.currentUser));
+			navigate('/dashboard');
 		} else {
 			setCheckingVerification(false);
 			alert('Please verify your email first.');
