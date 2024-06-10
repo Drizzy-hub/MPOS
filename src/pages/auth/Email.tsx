@@ -51,7 +51,7 @@ const VerifyEmail: React.FC = () => {
 			});
 			await signInWithEmailAndPassword(auth, formData.email, formData.password);
 		} catch (error) {
-			console.error('Error completing signup:', error);
+			alert('Error completing signup');
 			navigate('/signup');
 		}
 	};
