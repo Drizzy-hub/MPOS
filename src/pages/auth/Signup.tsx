@@ -1,9 +1,11 @@
-// src/pages/Signup.tsx
 import React, { useState, ChangeEvent } from 'react';
 import { Header } from '../../components';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+	createUserWithEmailAndPassword,
+	sendEmailVerification,
+} from 'firebase/auth';
 import StepOne from './components/StepOne';
 import StepTwo from './components/StepTwo';
 
@@ -64,14 +66,20 @@ const Signup: React.FC = () => {
 		});
 	};
 
+	const validatePasswords = () => {
+		return formData.password === formData.confirmPassword;
+	};
+
 	const handleSignup = async () => {
 		try {
-			await createUserWithEmailAndPassword(
+			const userCredential = await createUserWithEmailAndPassword(
 				auth,
 				formData.email,
 				formData.password
 			);
-			navigate('/verify-email');
+			const user = userCredential.user;
+			await sendEmailVerification(user);
+			navigate('/verify-email', { state: { formData } });
 		} catch (error) {
 			console.log('Error signing up user:', error);
 		}
@@ -88,14 +96,6 @@ const Signup: React.FC = () => {
 					Signing up on MPOS is fast and free--No credit card required, no
 					commitments or long-term contracts.
 				</p>
-				<div className="text-center mb-10">
-					<span className={`indicator ${currentStep === 1 ? 'active' : ''}`}>
-						Step 1
-					</span>
-					<span className={`indicator ${currentStep === 2 ? 'active' : ''}`}>
-						Step 2
-					</span>
-				</div>
 				<div className="mt-10 lg:w-2/4 mx-auto">
 					{currentStep === 1 ? (
 						<StepOne formData={formData} handleChange={handleChange} />
@@ -111,7 +111,9 @@ const Signup: React.FC = () => {
 				<div className="flex items-center flex-col justify-center mt-10">
 					<div className="flex items-center justify-center gap-10">
 						<button
-							className="border border-primary bg-transparent text-primary py-2 px-8 rounded-md"
+							className={`${
+								currentStep === 1 ? 'hidden' : ''
+							} border border-primary bg-transparent text-primary py-2 px-8 rounded-md`}
 							onClick={handleBack}
 						>
 							Back
@@ -119,18 +121,18 @@ const Signup: React.FC = () => {
 						<button
 							className="border border-primary bg-primary text-white py-2 px-8 rounded-md"
 							onClick={handleNext}
+							disabled={currentStep === 1 && !validatePasswords()}
 						>
 							{currentStep === 1 ? 'Next' : 'Activate'}
 						</button>
 					</div>
-					{currentStep === 2 && (
-						<p className="mt-3">
-							Already have an account?{' '}
-							<Link className="font-bold text-black" to="/login">
-								Sign In
-							</Link>
-						</p>
-					)}
+
+					<p className="mt-3">
+						Already have an account?{' '}
+						<Link className="font-bold text-black" to="/login">
+							Sign In
+						</Link>
+					</p>
 				</div>
 			</div>
 		</>

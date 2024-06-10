@@ -5,6 +5,10 @@ import { PasswordInput, TextInput } from '../../../components';
 
 const StepOne: React.FC<StepProps> = ({ formData, handleChange }) => (
 	<div>
+		<div className="flex pt-18 mb-16 justify-between ">
+			<p>Personal Information</p>
+			<p className={`indicator active`}>Step 1 of 2</p>
+		</div>
 		<TextInput
 			label="Email"
 			name="email"

@@ -1,31 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { auth, db } from '../../firebase';
-import { signInWithEmailAndPassword, User } from 'firebase/auth';
+import {
+	applyActionCode,
+	signInWithEmailAndPassword,
+	User,
+} from 'firebase/auth';
 import { doc, setDoc } from '@firebase/firestore';
 import { Header } from '../../components';
 import { FormData } from './Signup';
 
-export interface VerifyEmailProps {
-	formData: FormData;
-}
-
-const VerifyEmail: React.FC<VerifyEmailProps> = ({ formData }) => {
+const VerifyEmail: React.FC = () => {
 	const [verified, setVerified] = useState<boolean>(false);
 	const [checkingVerification, setCheckingVerification] =
 		useState<boolean>(false);
 	const navigate = useNavigate();
-
-	const checkEmailVerification = async () => {
-		if (auth.currentUser) {
-			await auth.currentUser.reload();
-			setVerified(auth.currentUser.emailVerified);
-		}
-	};
+	const location = useLocation();
+	const formData = location.state?.formData as FormData;
 
 	useEffect(() => {
-		checkEmailVerification();
-	}, []);
+		const verifyEmail = async () => {
+			const params = new URLSearchParams(location.search);
+			const oobCode = params.get('oobCode');
+
+			if (oobCode) {
+				try {
+					await applyActionCode(auth, oobCode);
+					setVerified(true);
+				} catch (error) {
+					console.error('Error verifying email:', error);
+					setVerified(false);
+				}
+			}
+		};
+
+		verifyEmail();
+	}, [location.search]);
 
 	const completeSignup = async (user: User) => {
 		try {
@@ -40,21 +50,19 @@ const VerifyEmail: React.FC<VerifyEmailProps> = ({ formData }) => {
 				country: formData.country,
 			});
 
-			// Sign in the user
 			await signInWithEmailAndPassword(auth, formData.email, formData.password);
-			localStorage.setItem('user', JSON.stringify(auth?.currentUser));
-			// Navigate to a success page or the main app
-			navigate('/dashboard'); // Replace with your desired route
+			localStorage.setItem('user', JSON.stringify(auth.currentUser));
+			navigate('/dashboard');
 		} catch (error) {
 			console.error('Error completing signup:', error);
-			navigate('/signup'); // Navigate back to signup on error
+			navigate('/signup');
 		}
 	};
 
-	const handleLoginClick = () => {
+	const handleLoginClick = async () => {
 		setCheckingVerification(true);
 		if (auth.currentUser && verified) {
-			completeSignup(auth.currentUser);
+			await completeSignup(auth.currentUser);
 		} else {
 			setCheckingVerification(false);
 			alert('Please verify your email first.');

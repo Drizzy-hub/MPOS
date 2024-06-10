@@ -6,6 +6,10 @@ import { TextInput } from '../../../components';
 
 const StepTwo: React.FC<StepProps> = ({ formData, handleChange }) => (
 	<div>
+		<div className="flex pt-18 mb-16 justify-between ">
+			<p>Store Information</p>
+			<p className={`indicator active`}>Step 2 of 2</p>
+		</div>
 		<TextInput
 			label="Store Name"
 			name="storeName"
@@ -14,7 +18,7 @@ const StepTwo: React.FC<StepProps> = ({ formData, handleChange }) => (
 			placeholder="Input your Store Name"
 		/>
 		<div className="mt-10">
-			<div className="flex flex-row gap-6">
+			<div className="flex items-center md:flex-row flex-col gap-6">
 				<TextInput
 					label="First Name"
 					name="firstName"

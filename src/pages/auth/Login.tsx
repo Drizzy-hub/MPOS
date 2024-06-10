@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Header, PasswordInput, TextInput } from '../../components';
+import { Header, PasswordInput, TextInput } from '../../components';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
@@ -63,12 +63,12 @@ const Login = () => {
 					<p className="cursor-pointer font-bold mt-5">Forgot Password?</p>
 				</div>
 				<div className="flex items-center flex-col justify-center mt-10">
-					<Button
-						to=""
-						style={{ color: '#ffffff', borderRadius: 4, width: 348 }}
-						title="Log in"
+					<button
+						className="border border-primary bg-primary text-white py-2 px-20 rounded-md"
 						onClick={onLogin}
-					/>
+					>
+						Login
+					</button>
 					<p className="mt-3">
 						New here?{' '}
 						<Link className="font-bold text-black" to="/signup">
