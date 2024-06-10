@@ -40,7 +40,7 @@ const Login = () => {
 		<>
 			<Header />
 			<div className="mx-auto px-5 md:px-10 lg:px-20 pb-10">
-				<h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-center">
+				<h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-center">
 					Welcome back! Sign in to your account
 				</h1>
 				<div className="mt-10 lg:w-2/4 mx-auto">
